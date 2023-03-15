@@ -10,5 +10,10 @@ namespace Infrastructure.DataContext
 
         }
         public DbSet<Motorcycle> Motorcycles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MotorcycleDataContext).Assembly);
+        }
     }
 }
