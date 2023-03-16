@@ -16,7 +16,18 @@ services:
     depends_on:
       - postgresql
     networks:
-      - dev      
+      - dev
+
+  frontend:
+    container_name: MotorcyclesUI
+    image: motorcyclesfrontend:latest
+    build: ../MotorcyclesFrontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - postgresql
+    networks:
+      - dev
 
   postgresql:
     container_name: PostgreSQL
