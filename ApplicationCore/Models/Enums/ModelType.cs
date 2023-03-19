@@ -6,7 +6,7 @@
         Naked,
         Sport,
         Motocross,
-        Touiring,
+        Touring,
         Chopper
     }
 }

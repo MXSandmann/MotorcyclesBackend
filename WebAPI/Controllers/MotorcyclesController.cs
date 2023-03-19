@@ -27,10 +27,12 @@ public class MotorcyclesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] MotorcycleDto dto)
+    public async Task<IActionResult> Create(MotorcycleDto dto)
     {
         var created = await _service.Add(_mapper.Map<Motorcycle>(dto));
-        return Ok(created);
+        var motorcycles = await _service.GetAll();
+        return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
+        //return Ok(created);
     }
 
     [HttpGet("{id:guid}")]
@@ -40,17 +42,21 @@ public class MotorcyclesController : ControllerBase
         return Ok(_mapper.Map<MotorcycleDto>(motorcycle));
     }
 
-    [HttpPut("[action]")]
+    [HttpPut]
     public async Task<IActionResult> Update([FromBody] MotorcycleDto dto)
     {
         var updated = await _service.Update(_mapper.Map<Motorcycle>(dto));
-        return Ok(_mapper.Map<MotorcycleDto>(updated));
+        var motorcycles = await _service.GetAll();
+        return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
+        //return Ok(_mapper.Map<MotorcycleDto>(updated));
     }
 
-    [HttpDelete("[action]/{id:guid}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Remove(Guid id)
     {
         await _service.Remove(id);
-        return Ok();
+        var motorcycles = await _service.GetAll();
+        return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
+        //return Ok();
     }
 }

@@ -19,6 +19,21 @@ builder.Services.AddDbContext<MotorcycleDataContext>(opt => opt.UseNpgsql(builde
 builder.Services.AddScoped<IMotorcyclesRepository, MotorcyclesRepository>();
 builder.Services.AddScoped<IMotorcyclesService, MotorcycleService>();
 builder.Services.AddAutoMapper(typeof(AutomapperProfile).Assembly);
+builder.Services.AddScoped<ISubscriptionsService, SubscriptionsService>();
+builder.Services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
+builder.Services.AddMediatR(c =>
+    c.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+const string origins = "MotorcyclesAppOrigins";
+
+builder.Services.AddCors(options => options.AddPolicy(name: origins,
+    policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetValue<string>("UIClients:Url")!)
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    }));
 
 var app = builder.Build();
 
@@ -28,6 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(origins);
 
 app.UseHttpsRedirection();
 

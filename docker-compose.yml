@@ -12,7 +12,7 @@ services:
       context: .
       dockerfile: WebAPI/Dockerfile    
     ports:
-      - ${WEBAPI_PORT}:${WEBAPI_PORT}
+      - "5045:5045"
     depends_on:
       - postgresql
     networks:
@@ -23,7 +23,7 @@ services:
     image: motorcyclesfrontend:latest
     build: ../MotorcyclesFrontend
     ports:
-      - "4200:4200"
+      - "4200:80"
     depends_on:
       - postgresql
     networks:
