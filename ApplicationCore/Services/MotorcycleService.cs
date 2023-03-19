@@ -13,11 +13,9 @@ namespace ApplicationCore.Services
             _repository = repository;
         }
 
-        public async Task<Motorcycle> Add(Motorcycle motorcycle)
+        public async Task<IEnumerable<Motorcycle>> Add(Motorcycle motorcycle)
         {
-            var newMotorcycleId = await _repository.Add(motorcycle);
-            return await _repository.Get(newMotorcycleId);
-
+            return await _repository.Add(motorcycle);
         }
 
         public async Task<Motorcycle> Get(Guid id)
@@ -30,15 +28,14 @@ namespace ApplicationCore.Services
             return await _repository.GetAll();
         }
 
-        public async Task Remove(Guid id)
+        public async Task<IEnumerable<Motorcycle>> Remove(Guid id)
         {
-            var toRemove = await _repository.Get(id);
-            await _repository.Remove(toRemove);
+            return await _repository.Remove(id);
         }
 
-        public async Task<Motorcycle> Update(Motorcycle motorcycle)
+        public async Task<IEnumerable<Motorcycle>> Update(Motorcycle motorcycle)
         {
-            return await _repository.Update(motorcycle);            
+            return await _repository.Update(motorcycle);
         }
     }
 }

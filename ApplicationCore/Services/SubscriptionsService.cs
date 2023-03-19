@@ -21,6 +21,6 @@ namespace ApplicationCore.Services
         public async Task<IEnumerable<Subscription>> GetAllSubscriptions()
         {
             return await _repository.GetAll();
-        }        
+        }
     }
 }

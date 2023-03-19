@@ -14,17 +14,17 @@ namespace Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Guid> Add(Motorcycle motorcycle)
+        public async Task<IEnumerable<Motorcycle>> Add(Motorcycle motorcycle)
         {
             await _dataContext.Motorcycles.AddAsync(motorcycle);
             await _dataContext.SaveChangesAsync();
-            return motorcycle.Id;
+            return await _dataContext.Motorcycles.ToListAsync();
 
         }
 
         public async Task<Motorcycle> Get(Guid id)
         {
-            var motorcycle =  await _dataContext.Motorcycles.FirstOrDefaultAsync(x => x.Id == id);
+            var motorcycle = await _dataContext.Motorcycles.FirstOrDefaultAsync(x => x.Id == id);
             ArgumentNullException.ThrowIfNull(motorcycle);
             return motorcycle;
         }
@@ -34,19 +34,20 @@ namespace Infrastructure.Repositories
             return await _dataContext.Motorcycles.ToListAsync();
         }
 
-        public async Task Remove(Motorcycle motorcycle)
+        public async Task<IEnumerable<Motorcycle>> Remove(Guid id)
         {
-            _dataContext.Motorcycles.Remove(motorcycle);
+            var toRemove = await _dataContext.Motorcycles.FirstOrDefaultAsync(x => x.Id == id);
+            ArgumentNullException.ThrowIfNull(toRemove);
+            _dataContext.Motorcycles.Remove(toRemove);
             await _dataContext.SaveChangesAsync();
+            return await _dataContext.Motorcycles.ToListAsync();
         }
 
-        public async Task<Motorcycle> Update(Motorcycle motorcycle)
+        public async Task<IEnumerable<Motorcycle>> Update(Motorcycle motorcycle)
         {
             _dataContext.Update(motorcycle);
             await _dataContext.SaveChangesAsync();
-            var updated = await _dataContext.Motorcycles.FirstOrDefaultAsync(x => x.Id == motorcycle.Id);
-            ArgumentNullException.ThrowIfNull(updated);
-            return updated;
+            return await _dataContext.Motorcycles.ToListAsync();
         }
     }
 }

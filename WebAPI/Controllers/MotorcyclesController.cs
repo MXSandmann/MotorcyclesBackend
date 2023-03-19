@@ -14,7 +14,7 @@ public class MotorcyclesController : ControllerBase
     private readonly IMapper _mapper;
 
     public MotorcyclesController(IMotorcyclesService service, IMapper mapper)
-    {        
+    {
         _service = service;
         _mapper = mapper;
     }
@@ -29,10 +29,8 @@ public class MotorcyclesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(MotorcycleDto dto)
     {
-        var created = await _service.Add(_mapper.Map<Motorcycle>(dto));
-        var motorcycles = await _service.GetAll();
+        var motorcycles = await _service.Add(_mapper.Map<Motorcycle>(dto));
         return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
-        //return Ok(created);
     }
 
     [HttpGet("{id:guid}")]
@@ -45,18 +43,14 @@ public class MotorcyclesController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] MotorcycleDto dto)
     {
-        var updated = await _service.Update(_mapper.Map<Motorcycle>(dto));
-        var motorcycles = await _service.GetAll();
+        var motorcycles = await _service.Update(_mapper.Map<Motorcycle>(dto));
         return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
-        //return Ok(_mapper.Map<MotorcycleDto>(updated));
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Remove(Guid id)
     {
-        await _service.Remove(id);
-        var motorcycles = await _service.GetAll();
+        var motorcycles = await _service.Remove(id);
         return Ok(_mapper.Map<IEnumerable<MotorcycleDto>>(motorcycles));
-        //return Ok();
     }
 }
